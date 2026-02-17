@@ -52,10 +52,15 @@ Client → FastAPI → Matching Engine → Pricing Engine → PostgreSQL
 ## Matching Algorithm
 
 For each incoming passenger:
+
     1.Fetch ACTIVE ride pools (with row lock)
+    
     2.Validate seat and luggage capacity
+    
     3.Calculate deviation using Haversine formula
+    
     4.Select pool with minimum deviation
+    
     5.If no valid pool, create new pool
 
 Time Complexity:
@@ -63,14 +68,14 @@ O(n) per request (n = active pools)
 
 ## Concurrency Handling
 
-Used SELECT ... FOR UPDATE
-Row-level locking prevents race conditions
-Ensures no seat overbooking
+    Used SELECT ... FOR UPDATE
+    Row-level locking prevents race conditions
+    Ensures no seat overbooking
 
 ## Dynamic Pricing Formula
-$$
-final_price =(base_rate × distance) × demand_multiplier × (1 - sharing_discount) + luggage_fee
-$$
+
+(final_price =(base_rate × distance) × demand_multiplier × (1 - sharing_discount) + luggage_fee)
+
 
 ## Performance Considerations
     Async FastAPI
@@ -109,4 +114,5 @@ uvicorn app.main:app --reload
 
 ```browser
 http://127.0.0.1:8000/docs
+
 ```
